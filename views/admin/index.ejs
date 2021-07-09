@@ -1,0 +1,154 @@
+<%- include ('../partials/header'); %>
+
+<%- include ('../partials/adminNav'); %>
+
+<header id="main-header" class="py-2 bg-primary text-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1><i class="fa fa-gear"></i> Faqja kryesore</h1>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="actions" class="py-4">
+  <div class="container">
+    <div class="row justify-content-end">
+      <div class="col-md-6">
+        
+        <form action="/admin" method="POST">
+           <div class="input-group">
+            <input name="searchUser" type="text" class="form-control" placeholder="Gjeni aktivitetet ne baze te emrit te perdoruesit, kategorise">
+            <span class="input-group-btn">
+              <button class="btn btn-primary">Kerko</button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include ('../partials/alerts'); %>
+
+<section id="posts" class="my-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-header text-center">
+            <h4>Aktivitetet e fundit te perdoruesve</h4>
+          </div>
+          <table class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Informacioni</th>
+                <th>Kategoria</th>
+                <th>Data e postimit</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <%for(let i = 0; i < activities.length; i++) { %>
+    
+                <tr>
+                <% if(activities[i].category =="Merr") { %>
+                      <td>
+                         <a href="/admin/users/profile/<%=activities[i].user_id.id%>" title="Vizito profilin">
+                           <%=activities[i].user_id.username || 'Ky perdorues '%></a>  ka marr librin <%=activities[i].info.title%>
+                      </td>
+                      <td>Merr</td>
+                      <td><%=activities[i].entryTime.toDateString()%></td>
+                  <% } else if(activities[i].category =="Kthe") { %>
+                      <td>
+                        <a href="/admin/users/profile/<%=activities[i].user_id.id%>" title="Vizito profilin">
+                          <%=activities[i].user_id.username || 'Ky perdorues'%> </a> ka kthyer librin <%=activities[i].info.title%>
+                      </td>
+                      <td>Kthe</td>
+                      
+                  <% }  else if(activities[i].category =="Update Profile") { %>
+                      <td>
+                        <a href="/admin/users/profile/<%=activities[i].user_id.id%>" title="Vizito profilin">
+                          <%=activities[i].user_id.username || 'Ky perdorues'%> </a> perditesoi profilin
+                      </td>
+                      <td>Perditeso profilin</td>
+                      <td><%=activities[i].entryTime.toDateString()%></td>
+                      
+                  <% }  else if(activities[i].category =="Update Password") { %>
+                      <td>
+                          <a href="/admin/users/profile/<%=activities[i].user_id.id%>" title="Vizito profilin">
+                          <%=activities[i].user_id.username || 'Ky perdorues'%> </a> perditesoi fjalekalimin
+                      </td>
+                      <td>Perditeso fjalekalimin</td>
+                      <td><%=activities[i].entryTime.toDateString()%></td>
+                      
+                  <% }  %>
+                      
+                     
+              </tr>
+                
+              <%  } %>
+              
+            </tbody>
+          </table>
+          
+         <% if (pages > 0) { %>
+            <nav class="mx-auto mb-2">
+              <ul class="pagination ">
+            
+            <% if (current == 1) { %>
+                <li class="page-item disabled"><a class="page-link">E para</a></li>
+            <% } else { %>
+                <li class="page-item"><a href="/admin?page=1" class="page-link">E para</a></li>
+            <% } %>
+
+            <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                <% if (i !== 1) { %>
+                  <li class="page-item disabled"><a class="page-link">...</a></li>
+                <% } %>
+                <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                      <li class="page-item active"><a class="page-link"><%= i %></a></li>
+                    <% } else { %>
+                      <li class="page-item"><a class="page-link" href="/admin?page=<%= i %>"> <%= i %></a> </li>
+                    <% } %>
+                    <% if (i == Number(current) + 4 && i < pages) { %>
+                          <li class="page-item disabled"><a class="page-link">...</a></li>
+                      <% } %>
+                    <% } %>
+                    <% if (current == pages) { %>
+                        <li class="page-item disabled"><a class="page-link">E fundit</a></li>
+                    <% } else { %>
+                        <li class="page-item"><a href="/admin?page=<%= pages %>" class="page-link">E fundit</a></li>
+                <% } %>
+            </ul>
+          </nav>
+          <% } %>
+          
+        </div>
+      </div>
+      
+      <div class="col-md-3">
+        <div class="card text-center bg-primary text-white p-3 mb-3">
+          <div class="card-block">
+            <h3>Librat</h3>
+            <h1 class="display-4"><i class="fa fa-pencil"></i> <%=books_count%></h1>
+            <a href="/admin/bookInventory/all/all/1" class="btn btn-outline-light">Shiko</a>
+          </div>
+        </div>
+
+        <div class="card text-center bg-success text-white p-3 mb-3">
+          <div class="card-block">
+            <h3>Perdoruesit</h3>
+            <h1 class="display-4"><i class="fa fa-users"></i> <%=users_count%> </h1>
+            <a href="/admin/users/1" class="btn btn-outline-light">Perdoruesit</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include ('../partials/footer'); %>
+

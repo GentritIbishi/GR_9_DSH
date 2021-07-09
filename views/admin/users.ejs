@@ -1,0 +1,131 @@
+<%- include ('../partials/header'); %>
+
+    
+<%- include ('../partials/adminNav'); %>
+
+<header id="main-header" class="py-2 bg-primary text-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1><i class="fa fa-users"></i> Perdoruesit</h1>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="actions" class="py-4 mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 mr-auto">
+          <a href="/admin" class="btn btn-light btn-block">
+          <i class="fa fa-arrow-left"></i> Kthehu ne faqen kryesore
+        </a>
+      </div>
+      <div class="col-md-6">
+        <form action="/admin/users/1" method="POST">
+           <div class="input-group">
+            <input name="searchUser" type="text" class="form-control" placeholder="Kerko perdoruesit sipas emrit, mbiemrit, emrit te perdoruesit, E-mail">
+            <span class="input-group-btn">
+              <button class="btn btn-primary">Kerko</button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include ('../partials/alerts'); %>
+
+<section id="users">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <h4>Users</h4>
+          </div>
+          <table class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Emri</th>
+                <th>Emri i perdoruesit</th>
+                <th>Email</th>
+                 <th>Gjinia</th>
+                <th>Data e regjistrimit</th>
+                
+                
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            <% users.forEach(user => { %>
+              <%if (user.isAdmin) return; %>
+                <tr>
+                <td><%=user.firstName + " " + user.lastName%></td>
+                <td><a href="/admin/users/profile/<%=user._id%>" title="Vizito kete perdorues"><%=user.username%></a></td>
+                <td><%=user.email%></td>
+                 <td><%=user.gender%></td>
+                <td><%=user.joined.toDateString()%></td>
+                
+                
+                <td>
+                  <%if(user.bookIssueInfo.length > 0) { %>
+                  <a href="/admin/users/delete/<%=user._id%>" title="Ky perdorues ka libra ne pronesi. A jeni i/e sigurt se deshironi ta fshini?" class="btn btn-sm btn-danger">
+                    <i class="fa fa-trash"></i>
+                  </a>
+                <%  } else { %>
+                  <a href="/admin/users/delete/<%=user._id%>" title="Fshi perdoruesin" class="btn btn-sm btn-danger">
+                    <i class="fa fa-trash"></i>
+                  </a>
+                <% } %>
+                
+                
+                </td>
+              </tr>
+            <% }); %>
+            </tbody>
+          </table>
+
+          <% if (pages > 0) { %>
+            <nav class="mx-auto mb-2">
+              <ul class="pagination ">
+            
+            <% if (current == 1) { %>
+                <li class="page-item disabled"><a class="page-link">E para</a></li>
+            <% } else { %>
+                <li class="page-item"><a href="/admin/users/1" class="page-link">E para</a></li>
+            <% } %>
+            
+            <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                <% if (i !== 1) { %>
+                  <li class="page-item disabled"><a class="page-link">...</a></li>
+                <% } %>
+                <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                      <li class="page-item active"><a class="page-link"><%= i %></a></li>
+                    <% } else { %>
+                      <li class="page-item"><a class="page-link" href="/admin/users/<%= i %>"> <%= i %></a> </li>
+                    <% } %>
+                    <% if (i == Number(current) + 4 && i < pages) { %>
+                          <li class="page-item disabled"><a class="page-link">...</a></li>
+                      <% } %>
+                    <% } %>
+                    <% if (current == pages) { %>
+                        <li class="page-item disabled"><a class="page-link">E fundit</a></li>
+                    <% } else { %>
+                        <li class="page-item"><a href="/admin/users/<%= pages %>" class="page-link">E fundit</a></li>
+                <% } %>
+            </ul>
+          </nav>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<%- include ('../partials/footer'); %>

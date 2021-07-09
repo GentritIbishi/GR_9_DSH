@@ -1,0 +1,66 @@
+<%- include ('../partials/header'); %>
+
+<section id="usersignUpForm">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-header text-center">
+            <h4>Regjistrimi i perdoruesit</h4>
+          </div>
+            <div class="card-block">
+              <form class="p-3" action="/auth/user-signUp" method="POST">
+                  
+                <div class="form-group">
+                  <label class="form-control-label">Emri</label>
+                  <input type="text" name="firstName" placeholder="Emri" class="form-control" required>
+                </div>
+                
+                 <div class="form-group">
+                  <label class="form-control-label">Mbiemri</label>
+                  <input type="text" name="lastName" placeholder="Mbiemri" class="form-control" required>
+                </div>
+                  
+                <div class="form-group">
+                  <label class="form-control-label">Emri i perdoruesit</label>
+                  <input type="text" name="username" placeholder="Emri i perdoruesit" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-control-label">Email</label>
+                  <input type="email" name="email" placeholder="Email" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-control-label">Fjalekalimi</label>
+                  <input type="password" name="password" placeholder="Fjalekalimi" class="form-control" required>
+                </div>
+                
+                 <div class="form-group">
+                  <label class="form-control-label">Gjinia</label>
+                  <select name="gender" class="form-control" >
+                    <option name="male">Mashkull</option>
+                    <option name="female">Femer</option>
+                    <option name="others">Tjeter</option>
+                  </select>
+                </div>
+                
+                 <div class="form-group">
+                  <label class="form-control-label">Adresa</label>
+                  <input type="text" name="address" placeholder="Adresa" class="form-control" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Dergo</button><p></p><p></p>
+                <p style="align-content: center;">Jeni regjistruar? Kyquni <a href='/auth/user-login'> ketu!</a></p>
+              </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container mt-5">
+
+</div>
+
+<%- include ('../partials/footer'); %>

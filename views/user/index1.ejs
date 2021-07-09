@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">    
+
+
+    <link href="http://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet" type="text/css">
+    <style>
+        html {
+    height: 100%;
+}
+
+
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <title>Simple Chat App</title>
+</head>
+<%- include ('../partials/header') %>
+
+<%- include ('../partials/userNav') %>
+
+<body>
+    <div id="myModal" class="modal">
+
+       
+           
+            <input id="nickname-input" class="custom-input" type="text" value="<%- currentUser.username%>"/> 
+        
+
+    </div>
+
+    <div class="big-wrapper">
+        <div class="online-user-wrapper"  style="color: wheat;">
+            <div class="online-user-header-container">
+                <header>
+                    <h2>Perdoruesit aktiv</h2>
+                </header>
+            </div>
+            <div>
+                <ul id="users-list">
+
+                </ul>
+            </div>
+        </div>
+        <div class="chat-wrapper">
+            <div class="super-chat-title-container">
+                <header>
+                    <h1  style="color: wheat;">Biseda</h1>
+                </header>
+            </div>
+
+            <div id="chatroom">
+                <div id="feedback"></div>
+            </div>
+
+            <div id="input_zone">
+                <input id="message" class="vertical-align custom-input" type="text" />
+                <button id="send_message" class="vertical-align btn" type="button">Send</button>
+            </div>
+
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        $(function () {
+    let socket = io.connect('http://localhost:3000');
+
+    let message = $("#message");
+    let send_message = $("#send_message");
+    let chatroom = $("#chatroom");
+    let feedback = $("#feedback");
+    let usersList = $("#users-list");
+    let nickName = $("#nickname-input");
+
+    
+    send_message.click(function(){
+        socket.emit('new_message', {message : message.val()})
+    });
+    message.keypress( e => {
+        let keycode = (e.keyCode ? e.keyCode : e.which);
+        if(keycode == '13'){
+            socket.emit('new_message', {message : message.val()})
+        }
+    })
+
+    socket.on("new_message", (data) => {
+        feedback.html('');
+        message.val('');
+        
+        chatroom.append(`
+                        <div>
+                            <div class="box3 sb14">
+                              <p  style='color:${data.color}' class="chat-text user-nickname">${data.username}</p>
+                              <p class="chat-text" style="color: rgba(0,0,0,0.87)">${data.message}</p>
+                            </div>
+                        </div>
+                        `)
+        keepTheChatRoomToTheBottom()
+    });
+
+    nickName.ready(socket.emit('change_username', {nickName : nickName.val()}),
+            socket.on('get users', data => {
+                let html = '';
+                for(let i=0;i<data.length;i++){
+                    html += `<li class="list-item" style="color: ${data[i].color}">${data[i].username}</li>`;
+                }
+                usersList.html(html)
+            })     
+    )
+        
+    
+    message.on("keypress", e => {
+        let keycode = (e.keyCode ? e.keyCode : e.which);
+        if(keycode != '13'){
+            socket.emit('typing')
+        }
+    });
+
+    socket.on('typing', (data) => {
+        feedback.html("<p><i>" + data.username + " is typing a message..." + "</i></p>")
+    });
+});
+
+const keepTheChatRoomToTheBottom = () => {
+    const chatroom = document.getElementById('chatroom');
+    chatroom.scrollTop = chatroom.scrollHeight - chatroom.clientHeight;
+}
+
+    </script>
+    <script>
+        var modal = document.getElementById("myModal");
+        const nicknameInput = $("#nickname-input");
+        
+        nicknameInput.ready(modal.style.display = "none")</script>
+<%- include ('../partials/footer'); %>

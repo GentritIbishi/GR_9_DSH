@@ -1,0 +1,65 @@
+<%- include ('../partials/header'); %>
+
+<%- include ('../partials/userNav'); %>
+
+
+<header id="main-header" class="py-2 bg-info text-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1><i class="fa fa-retweet"></i> Kthe</h1>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<section class="mt-4 py-3">
+    <div class="container">
+        <div class="col mx-auto">
+        
+        <div class="card">
+          <div class="card-header text-center">
+            <h4>Te gjitha per kthim</h4>
+          </div>
+          <table class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Titulli</th>
+                <th>Autori</th>
+                <th>Data e marrjes</th>
+                <th>Data e kthimit</th>
+                <th>Kategoria</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% user.forEach(book => { %>
+                <tr>
+                
+                <td> <%- book.book_info.title%></td>
+                <td><%- book.book_info.author%></td>
+                <td><%- book.book_info.issueDate.toDateString()%></td>
+                <td><%- book.book_info.returnDate.toDateString()%></td>
+                <td><%- book.book_info.category%></td>
+                <td>
+                  
+                 
+                  
+                  <form action="/books/return/<%- book.book_info.id%>" method="POST" class="d-inline">
+                   <input class="btn btn-xs btn-info" type="submit" value="Kthe">
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          
+         
+          
+        </div>
+      </div>
+    </div>
+</section>
+
+<%- include ('../partials/footer'); %>

@@ -1,0 +1,102 @@
+<%- include ('../partials/header'); %>
+
+    
+<%- include ('../partials/adminNav') %>
+
+<header id="main-header" class="py-2 bg-primary text-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1><i class="fa fa-pencil"></i> Aktivitetet e perdoruesit</h1>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="actions" class="py-4 mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 mr-auto">
+          <a href="/admin" class="btn btn-light btn-block">
+          <i class="fa fa-arrow-left"></i>Kthehu ne faqen kryesore
+        </a>
+      </div>
+      <div class="col-md-6">
+        <form action="/admin/users/activities/<%= activities[0].user_id.id %>" method="POST">
+          <div class="input-group">
+            <input name="category" type="text" class="form-control" placeholder="Kerko sipas kategorise...">
+            <span class="input-group-btn">
+              <button class="btn btn-primary">Kerko</button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="posts">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-header text-center">
+            <h4>Aktivitetet e fundit</h4>
+          </div>
+          <table class="table table-striped">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Informacioni</th>
+                <th>Kategoria</th>
+                <th>Data e postimit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%for(let i = 0; i < activities.length; i++) { %>
+    
+                <tr>
+                <% if(activities[i].category =="Merr") { %>
+                      <td>
+                         <%=activities[i].user_id.username || 'Ky perdorues'%> ka marrur librin <%=activities[i].info.title%> 
+                      </td>
+                      <td>Merr</td>
+                      <td><%=activities[i].entryTime.toDateString()%></td>
+                  <% } else if(activities[i].category =="Kthe") { %>
+                      <td>
+                         <%=activities[i].user_id.username || 'Ky perdorues'%> ka kthyer <%=activities[i].info.title%> 
+                      </td>
+                      <td>Kthe</td>
+                      
+                      
+                      <td><%=activities[i].entryTime.toDateString()%></td>
+                      
+                  <% }  else if(activities[i].category =="Update Profile") { %>
+                      <td>
+                         <%=activities[i].user_id.username || 'Ky perdorues'%> perditesoi profilin
+                      </td>
+                      <td>Perditeso profilin</td>
+                      <td><%=activities[i].entryTime.toDateString()%></td>
+                      
+                  <% }  else if(activities[i].category =="Update Password") { %>
+                      <td>
+                         <%=activities[i].user_id.username || 'Ky perdorues'%> perditesoi fjalekalimin
+                      </td>
+                      <td>Perditeso fjalekalimin</td>
+                      <td><%=activities[i].entryTime.toDateString()%></td>
+                      
+                  <% }  %>
+              </tr>
+                
+              <%  } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<%- include ('../partials/footer'); %>

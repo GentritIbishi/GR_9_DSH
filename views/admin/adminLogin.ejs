@@ -1,0 +1,33 @@
+<%- include ('../partials/header'); %>
+
+<%- include ('../partials/alerts'); %>
+
+<section id="adminLoginForm">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-header text-center">
+            <h4>Kyqja e administratorit</h4>
+          </div>
+            <div class="card-block">
+              <form class="p-3" action="/auth/admin-login" method="POST">
+                <div class="form-group">
+                  <label class="form-control-label">Emri i perdoruesit</label>
+                  <input type="text" name="username" placeholder="Emri i përdoruesit" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="form-control-label">Fjalekalimi</label>
+                  <input type="password" name="password" placeholder="Fjalekalimi" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Kyqu!</button>
+              </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<%- include ('../partials/footer'); %>
